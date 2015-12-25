@@ -30,6 +30,7 @@ test-suite spec
   main-is:             Main.hs
   build-depends:       base == 4.*,
                        icarus,
+                       hlint,
                        hspec == 2.*
   other-modules:       Spec
   default-language:    Haskell2010

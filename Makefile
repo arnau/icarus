@@ -25,6 +25,10 @@ test:
 	@$(call job, cabal test)
 .PHONY: test
 
+lint:
+	@$(call job, hlint .)
+.PHONY: lint
+
 define job
   $(DKR_JOB) --volume $(PWD):/source \
              --workdir /source \

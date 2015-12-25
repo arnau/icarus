@@ -1,5 +1,5 @@
 module Icarus.Bezier (Point(..),
-                      pointX, pointY,
+                      pointToList, pointToTuple,
                       bezier,
                       line1d',
                       cubic, cubicSeq, trange) where
@@ -11,9 +11,12 @@ import Control.Monad (zipWithM)
 -- http://mathfaculty.fullerton.edu/mathews/n2003/BezierCurveMod.html
 -------------------------------------------------------------------------------
 
+newtype Despair a b = Despair { getDespair :: (a, b) } deriving (Show, Eq, Ord)
+
 -- TODO: Should be restricted to numbers.
-data Point a = Point a a deriving (Show, Eq)
--- data Point a = Point {x :: a, y :: a} deriving (Show, Eq)
+data Point a = Point { getCoordX :: a,
+                       getCoordY :: a } deriving (Show, Eq, Ord)
+
 
 -- Let's opperate on Points without manual unwrapping.
 --
@@ -31,11 +34,17 @@ instance Applicative Point where
   (Point f g) <*> (Point x y) = Point (f x) (g y)
 
 
-pointX :: Point a -> a
-pointX (Point x _) = x
+-- Notes/Ideas
+--
+-- Is it possible to create a function with `sequenceA` that gathers all points
+-- and applies the interpolation function? is it idiotic?
+-- maybe it is a matter of using `map` or `zipWith`.
 
-pointY :: Point a -> a
-pointY (Point _ y) = y
+pointToList :: Point a -> [a]
+pointToList (Point x y) = [x, y]
+
+pointToTuple :: Point a -> (a, a)
+pointToTuple (Point x y) = (x, y)
 
 cubicSeq :: Point Float -> Point Float -> Point Float -> Point Float
          -> Float -> Float
@@ -43,6 +52,7 @@ cubicSeq :: Point Float -> Point Float -> Point Float -> Point Float
 cubicSeq p0 p1 p2 p3
          t0 t1 = map (cubic p0 p1 p2 p3) $ trange t0 t1
 
+-- cubicSeq helper
 trange :: Float -> Float -> [Float]
 trange a b = [x | x <- xs, x >= a,
                            x <= b]
@@ -106,6 +116,7 @@ b4 t = t ** 3
 -- Linear interpolation between two numbers
 line1d' :: Float -> Float -> (Float -> Float)
 line1d' x y = \t -> (1 - t) * x + t * y
+
 
 
 -------------------------------------------------------------------------------

@@ -21,10 +21,10 @@ spec = parallel $ do
       it "should hold pure f <*> x = fmap f x" $ do
         pure abs <*> (Point 1 (-1)) `shouldBe` fmap abs (Point 1 (-1) :: Point Int)
       it "should hold identity" $ do
-        pure id <*> (Point 1 1) `shouldBe` (Point 1 1 :: Point Int)
+        pure id <*> Point 1 1 `shouldBe` (Point 1 1 :: Point Int)
       -- it "should hold pure (.) <*> u <*> v <*> w = u <*> (v <*> w)" $ do
       it "should hold pure f <*> pure x = pure (f x)" $ do
-        pure abs <*> (Point 1 (-1)) `shouldBe` (Point (abs 1) (abs (-1)) :: Point Int)
+        pure abs <*> Point 1 (-1) `shouldBe` (Point (abs 1) (abs (-1)) :: Point Int)
       -- it "should hold u <*> pure y = pure ($ y) <*> u" $ do
 
 
@@ -74,13 +74,6 @@ spec = parallel $ do
     it "should return the selected range" $ do
       trange 0.5 0.8 `shouldBe` [0.5, 0.6, 0.7, 0.8]
 
-
   describe "bezier" $ do
     it "magic" $ do
       line1d' 0.0 1.0 0.5 `shouldBe` 0.5
-      -- bezier' [[0, 0],
-      --          [0, 1],
-      --          [1, 1],
-      --          [1, 0]] 0.5 `shouldBe` [0.5, 0.75]
-
-

@@ -75,7 +75,10 @@ cubic (Point x0 y0)
 
 -- parametric equation
 coord :: Float -> Float -> Float -> Float -> Float -> Float
-coord x1 x2 x3 x4 t = x1 * (b1 t) + x2 * (b2 t) + x3 * (b3 t) + x4 * (b4 t)
+coord x1 x2 x3 x4 t = x1 * b1 t
+                    + x2 * b2 t
+                    + x3 * b3 t
+                    + x4 * b4 t
 
 b1 :: Float -> Float
 b1 t = (1 - t) ** 3
@@ -114,8 +117,8 @@ b4 t = t ** 3
 -- toPoint [x, y] = Point x y
 
 -- Linear interpolation between two numbers
-line1d' :: Float -> Float -> (Float -> Float)
-line1d' x y = \t -> (1 - t) * x + t * y
+line1d' :: Float -> Float -> Float -> Float
+line1d' x y t = (1 - t) * x + t * y
 
 
 
@@ -138,8 +141,8 @@ bezier ps  = do l <- bezier (init ps)
 
 -- line between two points:
 line :: BPoint -> BPoint -> Parametric BPoint
-line p q = zipWithM line1d p q
+line = zipWithM line1d
 
 -- linear interpolation between two numbers:
 line1d :: Float -> Float -> Parametric Float
-line1d a b = \t -> (1 - t) * a + t * b
+line1d a b t = (1 - t) * a + t * b

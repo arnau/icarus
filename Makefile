@@ -29,6 +29,10 @@ lint:
 	@$(call job, hlint .)
 .PHONY: lint
 
+lint-src:
+	@$(call job, hlint src)
+.PHONY: lint-src
+
 define job
   $(DKR_JOB) --volume $(PWD):/source \
              --workdir /source \

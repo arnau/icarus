@@ -1,5 +1,6 @@
 module Icarus.Bezier (Point(..),
-                      pointToList, pointToTuple,
+                      pointToList, listToPoint,
+                      pointToTuple,
                       bezier,
                       line1d',
                       cubic, cubicSeq, trange) where
@@ -54,6 +55,9 @@ instance Num a => Monoid (Point a) where
 -- Is it possible to create a function with `sequenceA` that gathers all points
 -- and applies the interpolation function? is it idiotic?
 -- maybe it is a matter of using `map` or `zipWith`.
+
+listToPoint :: [a] -> Point a
+listToPoint [x, y] = Point x y
 
 pointToList :: Point a -> [a]
 pointToList (Point x y) = [x, y]

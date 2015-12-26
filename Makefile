@@ -26,12 +26,12 @@ test:
 .PHONY: test
 
 lint:
-	@$(call job, hlint .)
+	@$(call job, hlint src)
 .PHONY: lint
 
-lint-src:
-	@$(call job, hlint src)
-.PHONY: lint-src
+lint-all:
+	@$(call job, hlint .)
+.PHONY: lint-all
 
 define job
   $(DKR_JOB) --volume $(PWD):/source \

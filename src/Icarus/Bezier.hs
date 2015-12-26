@@ -1,6 +1,7 @@
 module Icarus.Bezier (Point(..),
-                      pointToList, listToPoint,
-                      pointToTuple,
+                      Despair(..),
+                      pointToList,
+                      pointToTuple, tupleToPoint,
                       bezier,
                       line1d',
                       cubic, cubicSeq, trange) where
@@ -56,8 +57,8 @@ instance Num a => Monoid (Point a) where
 -- and applies the interpolation function? is it idiotic?
 -- maybe it is a matter of using `map` or `zipWith`.
 
-listToPoint :: [a] -> Point a
-listToPoint [x, y] = Point x y
+tupleToPoint :: (a, a) -> Point a
+tupleToPoint (x, y) = Point x y
 
 pointToList :: Point a -> [a]
 pointToList (Point x y) = [x, y]

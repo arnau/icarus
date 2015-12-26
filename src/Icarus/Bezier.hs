@@ -11,12 +11,22 @@ import Control.Monad (zipWithM)
 -- http://mathfaculty.fullerton.edu/mathews/n2003/BezierCurveMod.html
 -------------------------------------------------------------------------------
 
-newtype Despair a b = Despair { getDespair :: (a, b) } deriving (Show, Eq, Ord)
+newtype Despair a = Despair { getDespair :: (a, a) } deriving (Show, Eq, Ord)
+
+-- -- To apply a function per coord the Despair signature should be `Despair a`
+-- -- where `a` would be a tuple.
+instance Functor Despair where
+  fmap f (Despair (x, y)) = Despair (f x, f y)
+
+-- instance Applicative Despair where
+--   pure = Despair
+--   Despair (f, g) <*> Despair (x, y) = Despair ((f x), (g y))
+
+
 
 -- TODO: Should be restricted to numbers.
 data Point a = Point { getCoordX :: a,
                        getCoordY :: a } deriving (Show, Eq, Ord)
-
 
 -- Let's opperate on Points without manual unwrapping.
 --
@@ -32,6 +42,11 @@ instance Functor Point where
 instance Applicative Point where
   pure a = Point a a
   (Point f g) <*> (Point x y) = Point (f x) (g y)
+
+
+instance Num a => Monoid (Point a) where
+  mempty = Point 0 0
+  (Point x0 y0) `mappend` (Point x1 y1) = Point (x0 + x1) (y0 + y1)
 
 
 -- Notes/Ideas

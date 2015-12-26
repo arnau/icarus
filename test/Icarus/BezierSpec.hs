@@ -27,6 +27,18 @@ spec = parallel $ do
         pure abs <*> Point 1 (-1) `shouldBe` (Point (abs 1) (abs (-1)) :: Point Int)
       -- it "should hold u <*> pure y = pure ($ y) <*> u" $ do
 
+    describe "as a Monoid" $ do
+      it "should hold Identity" $ do
+        mempty `mappend` (Point 1 1) `shouldBe` (Point 1 1 :: Point Int)
+        (Point 1 1) `mappend` mempty `shouldBe` (Point 1 1 :: Point Int)
+      it "should hold associativity" $ do
+        ((Point 1 1) `mappend` (Point 2 2)) `mappend` (Point 3 3)
+          `shouldBe` (Point 6 6 :: Point Int)
+
+        (Point 1 1) `mappend` ((Point 2 2) `mappend` (Point 3 3))
+          `shouldBe` (Point 6 6 :: Point Int)
+
+
 
   describe "cubic" $ do
     it "stage x" $ do

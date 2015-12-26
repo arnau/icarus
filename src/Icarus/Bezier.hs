@@ -42,12 +42,12 @@ instance Functor Point where
 --    (+) <$> Point 1 1 <*> (Point 1 2) -- => Point 2 3
 instance Applicative Point where
   pure a = Point a a
-  (Point f g) <*> (Point x y) = Point (f x) (g y)
+  Point f g <*> Point x y = Point (f x) (g y)
 
 
 instance Num a => Monoid (Point a) where
   mempty = Point 0 0
-  (Point x0 y0) `mappend` (Point x1 y1) = Point (x0 + x1) (y0 + y1)
+  Point x0 y0 `mappend` Point x1 y1 = Point (x0 + x1) (y0 + y1)
 
 
 -- Notes/Ideas
